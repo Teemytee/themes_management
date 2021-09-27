@@ -3,6 +3,7 @@ package com.example.springthymeleaf.model;
 import com.example.springthymeleaf.entity.RecordEntity;
 
 public class Record {
+    private String theme;
     private String name;
     private String link;
     private Long id;
@@ -12,6 +13,7 @@ public class Record {
         model.setId(entity.getId());
         model.setLink(entity.getLink());
         model.setName(entity.getName());
+        model.setTheme(entity.getTheme());
         return model;
     }
 
@@ -40,5 +42,13 @@ public class Record {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
     }
 }

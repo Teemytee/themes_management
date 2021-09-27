@@ -6,55 +6,91 @@ import com.example.springthymeleaf.exception.RecordNotFoundException;
 import com.example.springthymeleaf.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Controller
 @RequestMapping("/themes")
-
 public class RecordController {
 
     @Autowired
     private RecordService recordService;
-
-    @PostMapping("/post")
-    public ResponseEntity postTheme(@RequestBody RecordEntity record){
-        try{
-            recordService.postTheme(record);
-            return ResponseEntity.ok().body("Тема успешно добавлена");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Произошла ошибка");
-        }
-    }
 
     @GetMapping("/get")
     public List<RecordEntity> getThemes(){
         return recordService.getAllRecords();
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity deleteTheme(@PathVariable Long id){
-        try{
-            return ResponseEntity.ok(recordService.deleteTheme(id));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Произошла ошибка");
-        }
+    // Delete UI
+    // GET - потому что редирект на стартовую страницу
+    @GetMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('write')")
+    public String deleteTheme(@PathVariable Long id){
+        recordService.deleteTheme(id);
+        return "redirect:/themes/adminMainPage";
     }
 
-    @GetMapping("/all")
-    String getMainPage(Model model){
+    // Read UI admin
+    @GetMapping("/adminMainPage")
+    @PreAuthorize("hasAuthority('write')")
+    String getMainPageAdmin(Model model){
         List<RecordEntity> recordEntityList = getThemes();
         model.addAttribute("text", "Here's themes you should read");
         model.addAttribute("recordsTable", recordEntityList);
-        return "records";
+        model.addAttribute("record", new RecordEntity());
+        return "recordsAdmin";
     }
 
-    @GetMapping("/get/oneThemeId")
-    public ResponseEntity getOneThemeById(@RequestParam Long id){
+    // Read UI user
+    @GetMapping("/userMainPage")
+    @PreAuthorize("hasAnyAuthority('write', 'read')")
+    String getMainPageUser(Model model){
+        List<RecordEntity> recordEntityList = getThemes();
+        model.addAttribute("text", "Here's themes you should read");
+        model.addAttribute("recordsTable", recordEntityList);
+        model.addAttribute("record", new RecordEntity());
+        return "recordsUser";
+    }
+
+    // Create UI
+    @GetMapping("/create")
+    @PreAuthorize("hasAuthority('write')")
+    public String createRecordForm(Model model){
+        model.addAttribute("record", new RecordEntity());
+        return "putRecord";
+    }
+    @PostMapping("/create")
+    @PreAuthorize("hasAuthority('write')")
+    public String createRecord(RecordEntity record){
+        recordService.postTheme(record);
+        return "redirect:/themes/adminMainPage";
+
+    }
+
+    // Update UI
+    @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAuthority('write')")
+    public String updateRecordForm(Model model, @PathVariable("id") Long recordId) throws RecordNotFoundException {
+        model.addAttribute("record", recordService.getOneThemeById(recordId));
+        return "recordEdit";
+    }
+
+    @PostMapping("/edit/{id}")
+    @PreAuthorize("hasAuthority('write')")
+    public String updateRecord(RecordEntity record) {
+        recordService.postTheme(record);
+        return "redirect:/themes/adminMainPage";
+    }
+
+    // UI (future) Filtration
+    @PostMapping("/post/getThemeByLink")
+    public ResponseEntity getOneThemeByLinkPost(@RequestBody RecordEntity record){
         try{
-            return ResponseEntity.ok(recordService.getOneThemeById(id));
+            return ResponseEntity.ok(recordService.getOneThemeByLink(record.getLink()));
         } catch (RecordNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
@@ -62,10 +98,10 @@ public class RecordController {
         }
     }
 
-    @GetMapping("/get/oneThemeName")
-    public ResponseEntity getOneThemeByName(@RequestParam String name){
+    @PostMapping("/post/getThemeByName")
+    public ResponseEntity getOneThemeByNamePost(@RequestBody RecordEntity record){
         try{
-            return ResponseEntity.ok(recordService.getOneThemeByName(name));
+            return ResponseEntity.ok(recordService.getOneThemeByName(record.getName()));
         } catch (RecordNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
@@ -73,25 +109,14 @@ public class RecordController {
         }
     }
 
-    @GetMapping("/get/oneThemeLink")
-    public ResponseEntity getOneThemeByLink(@RequestParam String link){
+    @PostMapping("/post/getThemeById")
+    public ResponseEntity getOneThemeByIdPost(@RequestBody RecordEntity record){
         try{
-            return ResponseEntity.ok(recordService.getOneThemeByLink(link));
+            return ResponseEntity.ok(recordService.getOneThemeById(record.getId()));
         } catch (RecordNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Произошла ошибка");
         }
     }
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity updateTheme(@RequestBody RecordEntity record, @PathVariable Long id){
-        try{
-            return ResponseEntity.ok(recordService.updateTheme(record, id));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Произошла ошибка");
-        }
-    }
-
-
 }

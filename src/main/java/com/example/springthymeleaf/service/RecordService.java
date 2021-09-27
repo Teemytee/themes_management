@@ -20,12 +20,12 @@ public class RecordService {
         return recordRepo.save(record);
     }
 
-    public Record getOneThemeById(Long id) throws RecordNotFoundException {
+    public RecordEntity getOneThemeById(Long id) throws RecordNotFoundException {
         RecordEntity record = recordRepo.findById(id).get();
         if(record == null){
             throw new RecordNotFoundException("Тема с таким id не найдена");
         }
-        return Record.toModel(record);
+        return record;
     }
 
     public Long deleteTheme(Long id) {
@@ -53,12 +53,5 @@ public class RecordService {
             throw new RecordNotFoundException("Тема с такой ссылкой не найдена");
         }
         return Record.toModel(record);
-    }
-
-    public RecordEntity updateTheme(RecordEntity newRecord, Long id){
-        RecordEntity oldRecord = recordRepo.findById(id).get();
-        oldRecord.setName(newRecord.getName());
-        oldRecord.setLink(newRecord.getLink());
-        return recordRepo.save(oldRecord);
     }
 }

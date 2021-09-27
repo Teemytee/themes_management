@@ -1,6 +1,5 @@
 package com.example.springthymeleaf.entity;
 
-
 import javax.persistence.*;
 
 @Entity
@@ -9,6 +8,7 @@ public class RecordEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String theme;
     private String name;
     private String link;
 
@@ -37,5 +37,13 @@ public class RecordEntity {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
     }
 }
