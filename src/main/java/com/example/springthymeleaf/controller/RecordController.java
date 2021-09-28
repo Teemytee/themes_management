@@ -37,11 +37,14 @@ public class RecordController {
     // Read UI main
     @GetMapping("/mainPage")
     @PreAuthorize("hasAuthority('read')")
-    String getMainPageAdmin(Model model){
-        List<RecordEntity> recordEntityList = getThemes();
+    String getMainPageAdmin(Model model, String keyword){
         model.addAttribute("text", "Here's themes you should read");
-        model.addAttribute("recordsTable", recordEntityList);
-        model.addAttribute("record", new RecordEntity());
+        if(keyword != null){
+            model.addAttribute("recordsTable", recordService.findByKeyword(keyword));
+        } else{
+
+            model.addAttribute("recordsTable", getThemes());
+        }
         return "records";
     }
 
