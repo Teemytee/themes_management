@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .formLogin().permitAll()
-                .defaultSuccessUrl("/themes/adminMainPage")
+                .defaultSuccessUrl("/themes/mainPage")
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST"))

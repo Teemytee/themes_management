@@ -1,26 +1,40 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>All records</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
 </head>
 <body>
 <h1 th:text="${text}"/>
-<table class="table table-dark">
+<ul>
+    <a href="http://localhost:8080/themes/mainPage" class="btn btn-outline-dark" role="button">all themes</a>
+    <a href="http://localhost:8080/logout" class="btn btn-outline-dark" role="button">logout</a>
+    <a sec:authorize="hasAuthority('write')" href="http://localhost:8080/themes/create" class="btn btn-outline-dark" role="button">add theme</a>
+</ul>
+<form th:action="@{/mainPage}" method="get">
+    <input id="txtSearch" type="text" name="keyword">
+    <button type="submit">find</button>
+</form>
+<table class="table">
     <thead>
     <tr>
+        <th scope="col">Theme</th>
         <th scope="col">Name</th>
         <th scope="col">Link</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="record: ${recordsTable}">
+        <td th:text="${record.theme}"/>
         <td th:text="${record.name}"/>
         <td th:text="${record.link}"/>
+        <td>
+                <a sec:authorize="hasAuthority('write')" th:href="@{edit/{id}(id=${record.id})}" class="btn btn-outline-dark">edit</a>
+        </td>
+        <td><a sec:authorize="hasAuthority('write')" th:href="@{delete/{id}(id=${record.id})}" class="btn btn-outline-dark">delete</a></td>
     </tr>
     </tbody>
 </table>
-
 </body>
 </html>

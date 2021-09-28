@@ -31,29 +31,18 @@ public class RecordController {
     @PreAuthorize("hasAuthority('write')")
     public String deleteTheme(@PathVariable Long id){
         recordService.deleteTheme(id);
-        return "redirect:/themes/adminMainPage";
+        return "redirect:/themes/mainPage";
     }
 
-    // Read UI admin
-    @GetMapping("/adminMainPage")
-    @PreAuthorize("hasAuthority('write')")
+    // Read UI main
+    @GetMapping("/mainPage")
+    @PreAuthorize("hasAuthority('read')")
     String getMainPageAdmin(Model model){
         List<RecordEntity> recordEntityList = getThemes();
         model.addAttribute("text", "Here's themes you should read");
         model.addAttribute("recordsTable", recordEntityList);
         model.addAttribute("record", new RecordEntity());
-        return "recordsAdmin";
-    }
-
-    // Read UI user
-    @GetMapping("/userMainPage")
-    @PreAuthorize("hasAnyAuthority('write', 'read')")
-    String getMainPageUser(Model model){
-        List<RecordEntity> recordEntityList = getThemes();
-        model.addAttribute("text", "Here's themes you should read");
-        model.addAttribute("recordsTable", recordEntityList);
-        model.addAttribute("record", new RecordEntity());
-        return "recordsUser";
+        return "records";
     }
 
     // Create UI
@@ -67,7 +56,7 @@ public class RecordController {
     @PreAuthorize("hasAuthority('write')")
     public String createRecord(RecordEntity record){
         recordService.postTheme(record);
-        return "redirect:/themes/adminMainPage";
+        return "redirect:/themes/mainPage";
 
     }
 
@@ -83,7 +72,7 @@ public class RecordController {
     @PreAuthorize("hasAuthority('write')")
     public String updateRecord(RecordEntity record) {
         recordService.postTheme(record);
-        return "redirect:/themes/adminMainPage";
+        return "redirect:/themes/mainPage";
     }
 
     // UI (future) Filtration
