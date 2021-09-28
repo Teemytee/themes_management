@@ -19,6 +19,7 @@ public enum Role {
     private static Set<Permission> userPermissions(){
         Set<Permission> set = new HashSet<Permission>();
         set.add(Permission.READ);
+        set.add(Permission.LEARN);
         return set;
     }
 

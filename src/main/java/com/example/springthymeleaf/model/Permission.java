@@ -2,7 +2,8 @@ package com.example.springthymeleaf.model;
 
 public enum Permission {
     READ("read"),
-    WRITE("write");
+    WRITE("write"),
+    LEARN("learn");
     private final String permission;
 
     Permission(String permission) {

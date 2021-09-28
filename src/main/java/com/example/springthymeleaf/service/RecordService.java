@@ -58,7 +58,6 @@ public class RecordService {
         return Record.toModel(record);
     }
 
-    // Get records by keyword
     public List<RecordEntity> findByKeyword(String keyword){
         return recordRepository.findByKeyWord(keyword);
     }

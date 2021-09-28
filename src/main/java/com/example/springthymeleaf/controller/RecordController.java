@@ -37,7 +37,7 @@ public class RecordController {
     // Read UI main
     @GetMapping("/mainPage")
     @PreAuthorize("hasAuthority('read')")
-    String getMainPageAdmin(Model model, String keyword){
+    String getMainPage(Model model, String keyword){
         model.addAttribute("text", "Here's themes you should read");
         if(keyword != null){
             model.addAttribute("recordsTable", recordService.findByKeyword(keyword));
@@ -47,6 +47,15 @@ public class RecordController {
         }
         return "records";
     }
+
+    @GetMapping("/mainPageFiltered")
+    @PreAuthorize("hasAuthority('read')")
+    String getMainPageFiltered(Model model, String keyword){
+        model.addAttribute("text", "Here's themes you should read");
+        model.addAttribute("recordsTable", getThemes());
+        return "recordsFiltered";
+    }
+
 
     // Create UI
     @GetMapping("/create")

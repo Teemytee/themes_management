@@ -11,9 +11,10 @@
     <a href="http://localhost:8080/themes/mainPage" class="btn btn-outline-dark" role="button">all themes</a>
     <a href="http://localhost:8080/logout" class="btn btn-outline-dark" role="button">logout</a>
     <a sec:authorize="hasAuthority('write')" href="http://localhost:8080/themes/create" class="btn btn-outline-dark" role="button">add theme</a>
+    <a sec:authorize="hasAuthority('learn')" href="" class="btn btn-outline-dark" role="button">mark as read</a>
 </ul>
 <form th:action="@{mainPage}" method="get">
-    <input id="txtSearch" type="text" name="keyword">
+    <input id="txtSearch" type="text" name="keyword"  placeholder="type in...">
     <button type="submit">find</button>
 </form>
 <table class="table">
@@ -32,7 +33,12 @@
         <td>
                 <a sec:authorize="hasAuthority('write')" th:href="@{edit/{id}(id=${record.id})}" class="btn btn-outline-dark">edit</a>
         </td>
-        <td><a sec:authorize="hasAuthority('write')" th:href="@{delete/{id}(id=${record.id})}" class="btn btn-outline-dark">delete</a></td>
+        <td>
+            <a sec:authorize="hasAuthority('write')" th:href="@{delete/{id}(id=${record.id})}" class="btn btn-outline-dark">delete</a>
+        </td>
+        <td>
+            <input sec:authorize="hasAuthority('learn')" type="checkbox" aria-label="Checkbox for following text input">
+        </td>
     </tr>
     </tbody>
 </table>
