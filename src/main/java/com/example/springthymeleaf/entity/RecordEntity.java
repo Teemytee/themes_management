@@ -11,6 +11,8 @@ public class RecordEntity {
     private String theme;
     private String name;
     private String link;
+    private boolean read;
+    private Integer mark;
 
     public RecordEntity() {
     }
@@ -45,5 +47,21 @@ public class RecordEntity {
 
     public void setTheme(String theme) {
         this.theme = theme;
+    }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
+    }
+
+    public Integer getMark() {
+        return mark;
+    }
+
+    public void setMark(Integer mark) {
+        this.mark = mark;
     }
 }

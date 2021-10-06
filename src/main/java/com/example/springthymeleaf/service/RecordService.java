@@ -36,9 +36,15 @@ public class RecordService {
         return id;
     }
 
-    public List<RecordEntity> getAllRecords(){
-        List<RecordEntity> recordEntityList = new ArrayList<>();
-        recordRepo.findAll().forEach(recordEntityList::add);
+    public List<RecordEntity> getAllUnreadRecords(){
+        List<RecordEntity> recordEntityList = (List<RecordEntity>) recordRepo.findAll();
+        recordEntityList.removeIf(rec -> rec.isRead());
+        return recordEntityList;
+    }
+
+    public List<RecordEntity> getAllReadRecords(){
+        List<RecordEntity> recordEntityList = (List<RecordEntity>) recordRepo.findAll();
+        recordEntityList.removeIf(rec -> !rec.isRead());
         return recordEntityList;
     }
 
@@ -60,5 +66,11 @@ public class RecordService {
 
     public List<RecordEntity> findByKeyword(String keyword){
         return recordRepository.findByKeyWord(keyword);
+    }
+
+    public List<RecordEntity> findReadedByKeyword(String keyword){
+        List<RecordEntity> recordEntityList = findByKeyword(keyword);
+        recordEntityList.removeIf(rec -> !rec.isRead());
+        return recordEntityList;
     }
 }

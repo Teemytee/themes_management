@@ -3,6 +3,7 @@ package com.example.springthymeleaf.controller;
 
 import com.example.springthymeleaf.entity.RecordEntity;
 import com.example.springthymeleaf.exception.RecordNotFoundException;
+import com.example.springthymeleaf.service.RecordForMarkService;
 import com.example.springthymeleaf.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,11 @@ public class RecordController {
 
     @GetMapping("/get")
     public List<RecordEntity> getThemes(){
-        return recordService.getAllRecords();
+        return recordService.getAllUnreadRecords();
+    }
+
+    public List<RecordEntity> getThemesForMarks(){
+        return recordService.getAllReadRecords();
     }
 
     // Delete UI
@@ -42,7 +47,6 @@ public class RecordController {
         if(keyword != null){
             model.addAttribute("recordsTable", recordService.findByKeyword(keyword));
         } else{
-
             model.addAttribute("recordsTable", getThemes());
         }
         return "records";
@@ -51,7 +55,7 @@ public class RecordController {
     @GetMapping("/mainPageFiltered")
     @PreAuthorize("hasAuthority('read')")
     String getMainPageFiltered(Model model, String keyword){
-        model.addAttribute("text", "Here's themes you should read");
+        model.addAttribute("textForAdmin", "Here's themes you should read");
         model.addAttribute("recordsTable", getThemes());
         return "recordsFiltered";
     }
@@ -119,5 +123,38 @@ public class RecordController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Произошла ошибка");
         }
+    }
+
+    @GetMapping("/sendTheme/{id}")
+    @PreAuthorize("hasAuthority('learn')")
+    public String sendTheme(@PathVariable Long id) throws RecordNotFoundException {
+        RecordEntity recordEntity = recordService.getOneThemeById(id);
+        recordEntity.setRead(true);
+        recordService.postTheme(recordEntity);
+        return "redirect:/themes/mainPage";
+    }
+
+    @GetMapping("/giveMarks")
+    @PreAuthorize("hasAnyAuthority('write', 'learn')")
+    public String getMarksPage(Model model, String keyword){
+        model.addAttribute("textForAdmin", "Give mark for every theme student read");
+        model.addAttribute("textForUser", "Here's your marks");
+        if(keyword != null){
+            model.addAttribute("recordsTable", recordService.findReadedByKeyword(keyword));
+        } else{
+            model.addAttribute("recordsTable", getThemesForMarks());
+        }
+        return "recordsForMarks";
+    }
+
+    @GetMapping("/giveMarkMethod/{id}")
+    @PreAuthorize("hasAuthority('write')")
+    public String giveMark(@PathVariable Long id, String mark) throws RecordNotFoundException {
+        if (mark != ""){
+            RecordEntity recordEntity = recordService.getOneThemeById(id);
+            recordEntity.setMark(Integer.valueOf(mark));
+            recordService.postTheme(recordEntity);
+        }
+        return "redirect:/themes/giveMarks";
     }
 }
