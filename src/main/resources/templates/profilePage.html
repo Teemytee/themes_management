@@ -15,37 +15,15 @@
     <a sec:authorize="hasAuthority('learn')" href="http://localhost:8080/themes/giveMarks" class="btn btn-outline-dark" role="button">my marks</a>
     <a href="http://localhost:8080/themes/getProfilePage" class="btn btn-outline-dark" role="button">my profile</a>
 </ul>
-<form th:action="@{mainPage}" method="get" th:align="left">
-    <input id="txtSearch" type="text" name="keyword"  placeholder="type in...">
-    <button type="submit" class="btn btn-outline-dark">find</button>
-</form>
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Theme</th>
-        <th scope="col">Name</th>
-        <th scope="col">Link</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="record: ${recordsTable}">
-        <td th:text="${record.theme}"/>
-        <td th:text="${record.name}"/>
-        <td th:text="${record.link}"/>
-        <td>
-            <a sec:authorize="hasAuthority('write')" th:href="@{edit/{id}(id=${record.id})}" class="btn btn-outline-dark">edit</a>
-        </td>
-        <td>
-            <a sec:authorize="hasAuthority('write')" th:href="@{delete/{id}(id=${record.id})}" class="btn btn-outline-dark">delete</a>
-        </td>
-        <td>
-            <a sec:authorize="hasAuthority('learn')" th:href="@{sendTheme/{id}(id=${record.id})}" class="btn btn-outline-dark" role="button">mark as read</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<a href="http://localhost:8080/themes/profileEdit" class="btn btn-outline-dark" role="button">edit profile</a>
+<div>Your email: <h4 th:text="${user.getEmail()}"/></div>
+<div>Your first name: <h4 th:text="${user.getFirstName()}"/></div>
+<div>Your last name: <h4 th:text="${user.getLastName()}"/></div>
+<div>Your role: <h4 th:text="${user.getRole()}"/></div>
+<div>Your status: <h4 th:text="${user.getStatus()}"/></div>
+<div>Your image: <img th:src="${user.getImage()}" /></div>
+<p>
+    <img id="thumbnail" alt="Image preview">
+</p>
 </body>
 </html>

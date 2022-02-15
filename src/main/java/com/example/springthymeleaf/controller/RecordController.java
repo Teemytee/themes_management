@@ -3,6 +3,8 @@ package com.example.springthymeleaf.controller;
 
 import com.example.springthymeleaf.entity.RecordEntity;
 import com.example.springthymeleaf.exception.RecordNotFoundException;
+import com.example.springthymeleaf.model.User;
+import com.example.springthymeleaf.security.UserDetailsServiceImpl;
 import com.example.springthymeleaf.service.RecordForMarkService;
 import com.example.springthymeleaf.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -20,6 +24,8 @@ public class RecordController {
 
     @Autowired
     private RecordService recordService;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
     @GetMapping("/get")
     public List<RecordEntity> getThemes(){
@@ -156,5 +162,31 @@ public class RecordController {
             recordService.postTheme(recordEntity);
         }
         return "redirect:/themes/giveMarks";
+    }
+    @GetMapping("/getProfilePage")
+    public String getProfilePage(Model model, Principal principal){
+        model.addAttribute("text", "My profile");
+        model.addAttribute("user", userDetailsService.getUserByEmail(principal.getName()));
+        return "profilePage";
+    }
+
+    @PostMapping("/uploadProfileImage")
+    public String uploadProfileImage(Model model, Principal principal){
+        model.addAttribute("text", "My profile");
+        model.addAttribute("user", userDetailsService.getUserByEmail(principal.getName()));
+        return "redirect:/profilePage";
+    }
+
+    // Update user profile
+    @GetMapping("/profileEdit")
+    public String updateProfileForm(Model model, Principal principal){
+        model.addAttribute("user", userDetailsService.getUserByEmail(principal.getName()));
+        return "profilePageEdit";
+    }
+
+    @PostMapping("/profileEdit")
+    public String updateProfile(User user) {
+        userDetailsService.saveUser(user);
+        return "redirect:/themes/getProfilePage";
     }
 }

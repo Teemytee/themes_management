@@ -6,5 +6,6 @@ CREATE TABLE IF NOT EXISTS users(
     password character varying (255) NOT NULL,
     role character varying (20) NOT NULL,
     status character varying(20),
+    image character varying (45),
     PRIMARY KEY(id)
 )

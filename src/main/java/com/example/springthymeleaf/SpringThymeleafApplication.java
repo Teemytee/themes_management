@@ -11,11 +11,3 @@ public class SpringThymeleafApplication {
 	}
 
 }
-
-
-/*
-* Удаление recordsUser
-* Замена все recordsUser на recordsAdmin
-* разрешить доступ к recordsAdmin всем
-* переименовать пути к главной странице на просто mainPage
-* */

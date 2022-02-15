@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service("userDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
@@ -24,4 +26,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 new UsernameNotFoundException("User not found"));
         return SecurityUser.fromUser(user);
     }
+
+    public User getUserByEmail(String email){
+        User user = userRepo.findUserByEmail(email);
+        return user;
+    }
+
+    public User saveUser(User user){
+        return userRepo.save(user);
+    }
+
+
+
 }

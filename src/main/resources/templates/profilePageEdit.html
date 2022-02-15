@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update user</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+</head>
+<body>
+<form th:action="@{profileEdit}" th:object="${user}" method="post">
+    <a href="http://localhost:8080/themes/getProfilePage" class="btn btn-outline-dark" role="button">back</a>
+    <div class="d-flex flex-column" align="center">
+        <div class="p-2">
+            <label for="id">id</label>
+            <input readonly type="text" th:field="*{id}" id="id" placeholder="your email">
+        </div>
+        <div class="p-2">
+            <label for="email">email</label>
+            <input type="text" th:field="*{email}" id="email" placeholder="your email">
+        </div>
+        <div class="p-2">
+            <label for="firstName">first name</label>
+            <input type="text" th:field="*{firstName}" id="firstName" placeholder="Java">
+        </div>
+        <div class="p-2">
+            <label for="lastName">last name</label>
+            <input type="text" th:field="*{lastName}" id="lastName" placeholder="ООП">
+        </div>
+        <div class="p-2">
+            <label for="profileImage">profile image</label>
+            <input type="text" th:field="*{image}" id="profileImage" placeholder="javarush.ru">
+        </div>
+        <div class="p-2">
+            <label for="password">password</label>
+            <input readonly type="text" th:field="*{password}" id="password">
+        </div>
+        <div class="p-2">
+            <label for="role">role</label>
+            <input readonly type="text" th:field="*{role}" id="role">
+        </div>
+        <div class="p-2">
+            <input type="submit" value="update profile" class="btn btn-outline-dark">
+        </div>
+    </div>
+</form>
+</body>
+</html>
