@@ -13,9 +13,9 @@
     <a sec:authorize="hasAuthority('write')" href="http://localhost:8080/themes/create" class="btn btn-outline-dark" role="button">add theme</a>
     <a sec:authorize="hasAuthority('write')" href="http://localhost:8080/themes/giveMarks" class="btn btn-outline-dark" role="button">give marks</a>
     <a sec:authorize="hasAuthority('learn')" href="http://localhost:8080/themes/giveMarks" class="btn btn-outline-dark" role="button">my marks</a>
-    <a href="http://localhost:8080/themes/getProfilePage" class="btn btn-outline-dark" role="button">my profile</a>
+    <a href="http://localhost:8080/profile/getProfilePage" class="btn btn-outline-dark" role="button">my profile</a>
 </ul>
-<a href="http://localhost:8080/themes/profileEdit" class="btn btn-outline-dark" role="button">edit profile</a>
+<a href="http://localhost:8080/profile/profileEdit" class="btn btn-outline-dark" role="button">edit profile</a>
 <div>Your email: <h4 th:text="${user.getEmail()}"/></div>
 <div>Your first name: <h4 th:text="${user.getFirstName()}"/></div>
 <div>Your last name: <h4 th:text="${user.getLastName()}"/></div>

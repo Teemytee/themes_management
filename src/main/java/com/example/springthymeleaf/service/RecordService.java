@@ -5,10 +5,8 @@ import com.example.springthymeleaf.entity.RecordEntity;
 import com.example.springthymeleaf.exception.RecordNotFoundException;
 import com.example.springthymeleaf.model.Record;
 import com.example.springthymeleaf.repository.RecordRepo;
-import com.example.springthymeleaf.repository.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,8 +14,6 @@ public class RecordService {
 
     @Autowired
     private RecordRepo recordRepo;
-    @Autowired
-    private RecordRepository recordRepository;
 
     public RecordEntity postTheme(RecordEntity record){
         return recordRepo.save(record);
@@ -65,7 +61,7 @@ public class RecordService {
     }
 
     public List<RecordEntity> findByKeyword(String keyword){
-        return recordRepository.findByKeyWord(keyword);
+        return recordRepo.findByKeyWord(keyword);
     }
 
     public List<RecordEntity> findReadedByKeyword(String keyword){
