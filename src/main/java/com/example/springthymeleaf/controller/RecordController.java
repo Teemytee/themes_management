@@ -51,15 +51,6 @@ public class RecordController {
         return "records";
     }
 
-    @GetMapping("/mainPageFiltered")
-    @PreAuthorize("hasAuthority('read')")
-    String getMainPageFiltered(Model model, String keyword){
-        model.addAttribute("textForAdmin", "Here's themes you should read");
-        model.addAttribute("recordsTable", getThemes());
-        return "recordsFiltered";
-    }
-
-
     // Create UI
     @GetMapping("/create")
     @PreAuthorize("hasAuthority('write')")

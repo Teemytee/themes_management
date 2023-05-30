@@ -41,6 +41,6 @@ public class ProfileController {
     @PostMapping("/profileEdit")
     public String updateProfile(User user) {
         userDetailsService.saveUser(user);
-        return "redirect:/themes/getProfilePage";
+        return "redirect:/profile/getProfilePage";
     }
 }

@@ -27,7 +27,7 @@
         </div>
         <div class="p-2">
             <label for="profileImage">profile image</label>
-            <input type="text" th:field="*{image}" id="profileImage" placeholder="javarush.ru">
+            <input type="text" th:field="*{image}" id="profileImage" placeholder="">
         </div>
         <div class="p-2">
             <label for="password">password</label>
@@ -36,6 +36,10 @@
         <div class="p-2">
             <label for="role">role</label>
             <input readonly type="text" th:field="*{role}" id="role">
+        </div>
+        <div class="p-2">
+            <label for="status">status</label>
+            <input readonly type="text" th:field="*{status}" id="status">
         </div>
         <div class="p-2">
             <input type="submit" value="update profile" class="btn btn-outline-dark">
